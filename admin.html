@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="modern-style.css">
+    <title>Әкімші панелі - Vegus Cinema</title>
+    <style>
+        .admin-container {
+            width: 95%;
+            margin: 20px auto;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .admin-header {
+            background: #2e3037;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #2e3037;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: #1f2025;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-btn.active {
+            background: #fd6565;
+        }
+
+        .nav-btn:hover {
+            background: #fd6565;
+        }
+
+        .admin-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        .main-content {
+            background: #2e3037;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .sidebar {
+            background: #2e3037;
+            padding: 20px;
+            border-radius: 15px;
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #fd6565;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 2px solid #fd6565;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #1f2025;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fd6565;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: #1f2025;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background: #2e3037;
+            color: #fd6565;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(253, 101, 101, 0.1);
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 2px;
+            transition: 0.3s;
+        }
+
+        .btn-edit {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-add {
+            background: #fd6565;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: #1f2025;
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .recent-activity {
+            margin-top: 20px;
+        }
+
+        .activity-item {
+            background: #1f2025;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #fd6565;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-inactive {
+            background: #f44336;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .movie-card {
+            background: #1f2025;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .movie-poster {
+            width: 60px;
+            height: 80px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            flex: 1;
+        }
+
+        .movie-title {
+            font-weight: bold;
+            color: #fd6565;
+            margin-bottom: 5px;
+        }
+
+        .movie-meta {
+            font-size: 12px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация будет добавлена автоматически через navigation.js -->
+    <script src="navigation.js"></script>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Әкімші панелі</h1>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span id="adminWelcome">Қош келдіңіз, Әкімші!</span>
+                <button class="btn btn-delete" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Шығу
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-nav">
+            <button class="nav-btn active" onclick="showTab('dashboard')">Бақылау тақтасы</button>
+            <button class="nav-btn" onclick="showTab('movies')">Фильмдер</button>
+            <button class="nav-btn" onclick="showTab('sessions')">Сеанстар</button>
+            <button class="nav-btn" onclick="showTab('users')">Пайдаланушылар</button>
+            <button class="nav-btn" onclick="showTab('tickets')">Билеттер</button>
+        </div>
+
+        <div class="admin-content">
+            <div class="main-content">
+                <!-- Бақылау тақтасы -->
+                <div id="dashboard" class="tab-content active">
+                    <h2 class="section-title">Жалпы статистика</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalUsers">0</div>
+                            <div class="stat-label">Пайдаланушылар</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalMovies">6</div>
+                            <div class="stat-label">Белсенді фильмдер</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalTickets">0</div>
+                            <div class="stat-label">Сатылған билеттер</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalRevenue">0 ₸</div>
+                            <div class="stat-label">Жалпы табыс</div>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title">Соңғы әрекеттер</h2>
+                    <div class="recent-activity" id="recentActivity">
+                        <!-- Активность будет загружена здесь -->
+                    </div>
+                </div>
+
+                <!-- Фильмдер -->
+                <div id="movies" class="tab-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 class="section-title">Фильмдерді басқару</h2>
+                        <button class="btn btn-add" onclick="showMovieForm()">
+                            <i class="bi bi-plus"></i> Жаңа фильм қосу
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Постер</th>
+                                    <th>Атауы</th>
+                                    <th>Жанр</th>
+                                    <th>Ұзақтығы</th>
+                                    <th>Рейтинг</th>
+                                    <th>Статус</th>
+                                    <th>Әрекеттер</th>
+                                </tr>
+                            </thead>
+                            <tbody id="moviesTable">
+                                <!-- Фильмы будут загружены здесь -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Сеанстар -->
+                <div id="sessions" class="tab-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 class="section-title">Сеанстарды басқару</h2>
+                        <button class="btn btn-add" onclick="showSessionForm()">
+                            <i class="bi bi-plus"></i> Жаңа сеанс қосу
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Фильм</th>
+                                    <th>Күні</th>
+                                    <th>Уақыты</th>
+                                    <th>Зал</th>
+                                    <th>Бос орындар</th>
+                                    <th>Бағасы</th>
+                                    <th>Әрекетлер</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sessionsTable">
+                                <!-- Сеансы будут загружены здесь -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Пайдаланушылар -->
+                <div id="users" class="tab-content">
+                    <h2 class="section-title">Пайдаланушылар</h2>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Аты</th>
+                                    <th>Email</th>
+                                    <th>Тіркелген күні</th>
+                                    <th>Билеттер саны</th>
+                                    <th>Соңғы кіру</th>
+                                    <th>Әрекеттер</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTable">
+                                <!-- Пользователи будут загружены здесь -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Билеттер -->
+                <div id="tickets" class="tab-content">
+                    <h2 class="section-title">Билеттер</h2>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Фильм</th>
+                                    <th>Пайдаланушы</th>
+                                    <th>Күні</th>
+                                    <th>Уақыты</th>
+                                    <th>Орын</th>
+                                    <th>Бағасы</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ticketsTable">
+                                <!-- Билеты будут загружены здесь -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <!-- Форма добавления фильма -->
+                <div id="movieForm" style="display: none;">
+                    <h3 class="section-title">Жаңа фильм қосу</h3>
+                    <form id="addMovieForm">
+                        <div class="form-group">
+                            <label>Атауы</label>
+                            <input type="text" id="movieTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Жанр</label>
+                            <select id="movieGenre" required>
+                                <option value="">Таңдаңыз</option>
+                                <option value="Фантастика • Супергеройский • Комедия">Фантастика • Супергеройский • Комедия</option>
+                                <option value="Фантастика • Супергеройский • Экшен">Фантастика • Супергеройский • Экшен</option>
+                                <option value="Триллер • Драма • Криминал">Триллер • Драма • Криминал</option>
+                                <option value="Экшен • Триллер • Криминал">Экшен • Триллер • Криминал</option>
+                                <option value="Фантастика • Супергеройский • Приключения">Фантастика • Супергеройский • Приключения</option>
+                                <option value="Экшен • Драма • Приключения">Экшен • Драма • Приключения</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Ұзақтығы (минут)</label>
+                            <input type="number" id="movieDuration" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Рейтинг</label>
+                            <select id="movieRating" required>
+                                <option value="G">G</option>
+                                <option value="PG">PG</option>
+                                <option value="PG-13" selected>PG-13</option>
+                                <option value="R">R</option>
+                                <option value="NC-17">NC-17</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Сипаттама</label>
+                            <textarea id="movieDescription"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Постер URL</label>
+                            <input type="text" id="moviePoster" placeholder="img/movie.jpg">
+                        </div>
+                        <div class="form-group">
+                            <label>Бағасы (₸)</label>
+                            <input type="number" id="moviePrice" required>
+                        </div>
+                        <button type="submit" class="btn btn-add" style="width: 100%;">Қосу</button>
+                        <button type="button" class="btn" onclick="hideMovieForm()" style="width: 100%; margin-top: 10px; background: #666;">Бас тарту</button>
+                    </form>
+                </div>
+
+                <!-- Форма добавления сеанса -->
+                <div id="sessionForm" style="display: none;">
+                    <h3 class="section-title">Жаңа сеанс қосу</h3>
+                    <form id="addSessionForm">
+                        <div class="form-group">
+                            <label>Фильм</label>
+                            <select id="sessionMovie" required>
+                                <option value="">Таңдаңыз</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Күні</label>
+                            <input type="date" id="sessionDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Уақыты</label>
+                            <select id="sessionTime" required>
+                                <option value="10:00">10:00</option>
+                                <option value="13:30">13:30</option>
+                                <option value="17:00">17:00</option>
+                                <option value="20:30">20:30</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Тип</label>
+                            <select id="sessionType" required>
+                                <option value="2D">2D</option>
+                                <option value="3D">3D</option>
+                                <option value="4DX">4DX</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Зал</label>
+                            <select id="sessionHall" required>
+                                <option value="1">Зал 1</option>
+                                <option value="2">Зал 2</option>
+                                <option value="3">Зал 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Бағасы (₸)</label>
+                            <input type="number" id="sessionPrice" required>
+                        </div>
+                        <button type="submit" class="btn btn-add" style="width: 100%;">Қосу</button>
+                        <button type="button" class="btn" onclick="hideSessionForm()" style="width: 100%; margin-top: 10px; background: #666;">Бас тарту</button>
+                    </form>
+                </div>
+
+                <!-- Быстрая статистика -->
+                <div id="quickStats">
+                    <h3 class="section-title">Жылдам статистика</h3>
+                    <div class="stat-card" style="margin-bottom: 15px;">
+                        <div class="stat-number" id="todayTickets">0</div>
+                        <div class="stat-label">Бүгінгі билеттер</div>
+                    </div>
+                    <div class="stat-card" style="margin-bottom: 15px;">
+                        <div class="stat-number" id="weekRevenue">0 ₸</div>
+                        <div class="stat-label">Апталық табыс</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeSessions">0</div>
+                        <div class="stat-label">Белсенді сеанстар</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Функции админ-панели
+        document.addEventListener('DOMContentLoaded', function() {
+            // Загрузка данных админ-панели
+            loadAdminData();
+        });
+
+        function loadAdminData() {
+            // Загрузка фильмов
+            const movies = [
+                {
+                    title: "Ant man",
+                    genre: "Фантастика • Супергеройский • Комедия",
+                    duration: "125 минут",
+                    rating: "PG-13",
+                    poster: "img/ant man.jpg",
+                    price: 2000,
+                    status: "active"
+                },
+                {
+                    title: "Avengers",
+                    genre: "Фантастика • Супергеройский • Экшен",
+                    duration: "143 минут",
+                    rating: "PG-13",
+                    poster: "img/avengers.jpg",
+                    price: 2200,
+                    status: "active"
+                },
+                {
+                    title: "Dexter Resurrection",
+                    genre: "Триллер • Драма • Криминал",
+                    duration: "110 минут",
+                    rating: "R",
+                    poster: "img/dexter.jpg",
+                    price: 1800,
+                    status: "active"
+                },
+                {
+                    title: "Jhon Wick",
+                    genre: "Экшен • Триллер • Криминал",
+                    duration: "101 минут",
+                    rating: "R",
+                    poster: "img/Jhon Wick.jpg",
+                    price: 2100,
+                    status: "active"
+                },
+                {
+                    title: "Spiderman",
+                    genre: "Фантастика • Супергеройский • Приключения",
+                    duration: "141 минут",
+                    rating: "PG-13",
+                    poster: "img/spiderman.jpg",
+                    price: 2300,
+                    status: "active"
+                },
+                {
+                    title: "Topgun",
+                    genre: "Экшен • Драма • Приключения",
+                    duration: "131 минут",
+                    rating: "PG-13",
+                    poster: "img/topgun.jpg",
+                    price: 2400,
+                    status: "active"
+                }
+            ];
+
+            // Заполнение таблицы фильмов
+            const moviesTable = document.getElementById('moviesTable');
+            moviesTable.innerHTML = movies.map(movie => `
+                <tr>
+                    <td><img src="${movie.poster}" alt="${movie.title}" class="movie-poster"></td>
+                    <td>${movie.title}</td>
+                    <td>${movie.genre}</td>
+                    <td>${movie.duration}</td>
+                    <td>${movie.rating}</td>
+                    <td><span class="status-badge status-active">Белсенді</span></td>
+                    <td>
+                        <button class="btn btn-edit"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-delete"><i class="bi bi-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Заполнение выпадающего списка фильмов
+            const sessionMovieSelect = document.getElementById('sessionMovie');
+            sessionMovieSelect.innerHTML = '<option value="">Таңдаңыз</option>' + 
+                movies.map(movie => `<option value="${movie.title}">${movie.title}</option>`).join('');
+
+            // Загрузка пользователей
+            const users = JSON.parse(localStorage.getItem('cinemaUsers')) || [];
+            const usersTable = document.getElementById('usersTable');
+            if (users.length > 0) {
+                usersTable.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${new Date(user.registrationDate).toLocaleDateString('kk-KZ')}</td>
+                        <td>${user.tickets ? user.tickets.length : 0}</td>
+                        <td>Бүгін</td>
+                        <td>
+                            <button class="btn btn-edit"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-delete"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+                document.getElementById('totalUsers').textContent = users.length;
+            }
+
+            // Загрузка билетов
+            let allTickets = [];
+            users.forEach(user => {
+                if (user.tickets) {
+                    allTickets = allTickets.concat(user.tickets.map(ticket => ({
+                        ...ticket,
+                        userName: user.name
+                    })));
+                }
+            });
+
+            const ticketsTable = document.getElementById('ticketsTable');
+            if (allTickets.length > 0) {
+                ticketsTable.innerHTML = allTickets.map(ticket => `
+                    <tr>
+                        <td>${ticket.id}</td>
+                        <td>${ticket.movie}</td>
+                        <td>${ticket.userName}</td>
+                        <td>${ticket.date}</td>
+                        <td>${ticket.time}</td>
+                        <td>${ticket.seats}</td>
+                        <td>${ticket.price} ₸</td>
+                        <td><span class="status-badge status-active">Белсенді</span></td>
+                    </tr>
+                `).join('');
+                document.getElementById('totalTickets').textContent = allTickets.length;
+                
+                // Расчет общего дохода
+                const totalRevenue = allTickets.reduce((sum, ticket) => sum + (ticket.price || 0), 0);
+                document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString() + ' ₸';
+                document.getElementById('weekRevenue').textContent = totalRevenue.toLocaleString() + ' ₸';
+                document.getElementById('todayTickets').textContent = allTickets.length;
+            }
+        }
+
+        function showTab(tabName) {
+            // Скрыть все вкладки
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Убрать активный класс со всех кнопок
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Показать выбранную вкладку
+            document.getElementById(tabName).classList.add('active');
+            
+            // Сделать кнопку активной
+            event.target.classList.add('active');
+        }
+
+        function showMovieForm() {
+            document.getElementById('movieForm').style.display = 'block';
+            document.getElementById('quickStats').style.display = 'none';
+        }
+
+        function hideMovieForm() {
+            document.getElementById('movieForm').style.display = 'none';
+            document.getElementById('quickStats').style.display = 'block';
+        }
+
+        function showSessionForm() {
+            document.getElementById('sessionForm').style.display = 'block';
+            document.getElementById('quickStats').style.display = 'none';
+        }
+
+        function hideSessionForm() {
+            document.getElementById('sessionForm').style.display = 'none';
+            document.getElementById('quickStats').style.display = 'block';
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

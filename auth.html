@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="modern-style.css">
+    <title>Тіркелу/Кіру - Movie Ticket Booking</title>
+    <style>
+        .auth-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1f2025;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .auth-box {
+            background: #2e3037;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 400px;
+            color: white;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #fd6565;
+        }
+        
+        .auth-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .auth-tab.active {
+            background: #fd6565;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: #1f2025;
+            color: white;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #fd6565;
+            outline: none;
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: #fd6565;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        
+        .auth-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+        
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .auth-switch a {
+            color: #fd6565;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+   <!-- Навигация и футер добавятся автоматически -->
+    
+    <div class="container">
+        <!-- Уникальный контент страницы -->
+    </div>
+
+    <!-- Подключаем общие компоненты -->
+    <script src="navigation.js"></script>
+    <script src="footer.js"></script>
+    <!-- Остальные специфичные скрипты -->
+
+    
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="showTab('login')">Кіру</div>
+                <div class="auth-tab" onclick="showTab('register')">Тіркелу</div>
+            </div>
+            
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Құпиясөз</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="auth-btn">Кіру</button>
+                <div class="auth-switch">
+                    Тіркелмегенсіз бе? <a onclick="showTab('register')">Тіркелу</a>
+                </div>
+            </form>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="regName">Аты-жөні</label>
+                    <input type="text" id="regName" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Құпиясөз</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword">Құпиясөзді растау</label>
+                    <input type="password" id="regConfirmPassword" required>
+                </div>
+                <button type="submit" class="auth-btn">Тіркелу</button>
+                <div class="auth-switch">
+                    Тіркелгенсіз бе? <a onclick="showTab('login')">Кіру</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+    // Общий скрипт для навигации (добавить в каждый HTML файл перед </body>)
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const navElement = document.querySelector('nav');
+        
+        if (navElement) {
+            if (currentUser) {
+                navElement.innerHTML = `
+                    <a href="index.html"><span>Great</span> Cinema</a>
+                    <div style="margin-left: auto; display: flex; align-items: center;">
+                        <span style="color: #fff; margin-right: 20px;">Қош келдіңіз, ${currentUser.name}!</span>
+                        <a href="profile.html" style="margin-right: 20px;">Профиль</a>
+                        <a href="about.html" style="margin-right: 20px;">Біз туралы</a>
+                        <a href="#" onclick="logout()">Шығу</a>
+                    </div>
+                `;
+            } else {
+                navElement.innerHTML = `
+                    <a href="index.html"><span>Great</span> Cinema</a>
+                    <div style="margin-left: auto;">
+                        <a href="auth.html" style="margin-right: 20px;">Тіркелу/Кіру</a>
+                        <a href="profile.html" style="margin-right: 20px;">Профиль</a>
+                        <a href="about.html" style="margin-right: 20px;">Біз туралы</a>
+                        <a href="index.html">Басты бет</a>
+                    </div>
+                `;
+            }
+        }
+    });
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

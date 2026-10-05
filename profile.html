@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="modern-style.css">
+    <title>Профиль - Vegus Cinema</title>
+    <style>
+        .profile-container {
+            width: 90%;
+            margin: 20px auto;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .profile-header {
+            background: #2e3037;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-info h1 {
+            color: #fd6565;
+            margin-bottom: 10px;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-card {
+            background: #1f2025;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fd6565;
+        }
+
+        .tickets-section h2 {
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .tickets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .ticket-card {
+            background: #2e3037;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .ticket-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .ticket-header {
+            background: #fd6565;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ticket-movie {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .ticket-type {
+            background: #1f2025;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .ticket-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ticket-barcode-small {
+            width: 100%;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .ticket-details {
+            flex: 1;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .no-tickets {
+            text-align: center;
+            padding: 40px;
+            background: #2e3037;
+            border-radius: 10px;
+            color: #888;
+        }
+
+        .logout-btn {
+            background: #fd6565;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+
+        /* Модальное окно для полного билета */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background: #2e3037;
+            margin: 2% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 600px;
+            position: relative;
+            color: white;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #fd6565;
+        }
+
+        .close-modal:hover {
+            color: #ff5252;
+        }
+
+        .ticket-full {
+            text-align: center;
+        }
+
+        .ticket-full-header {
+            background: #fd6565;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            margin: -30px -30px 20px -30px;
+        }
+
+        .ticket-full-barcode {
+            background: white;
+            padding: 25px 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ticket-full-barcode svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .ticket-full-details {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .ticket-full-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #444;
+        }
+
+        .ticket-full-row:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-id {
+            background: #1f2025;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 15px 0;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        /* Стили для навигации */
+        .navbar {
+            background: #1f2025;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .navbar .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar .logo span {
+            color: #fd6565;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fd6565;
+        }
+
+        .user-welcome {
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .btn-logout {
+            background: #fd6565;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #ff5252;
+        }
+
+        /* Стили для футера */
+        footer {
+            background: #1f2025;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            width: 90%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            color: #fd6565;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: #fd6565;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            background: #2e3037;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #fd6565;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #2e3037;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo span {
+            color: #fd6565;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 20px;
+            }
+            
+            .ticket-full-header {
+                margin: -20px -20px 15px -20px;
+                padding: 15px;
+            }
+            
+            .ticket-full-barcode {
+                padding: 20px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация будет автоматически добавлена через navigation.js -->
+    
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="user-info">
+                <h1 id="userName">Пайдаланушы аты</h1>
+                <p id="userEmail">email@example.com</p>
+                <p id="memberSince">Тіркелген күні: </p>
+            </div>
+            <div class="user-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="ticketsCount">0</div>
+                    <div>Билеттер</div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Шығу
+                </button>
+            </div>
+        </div>
+
+        <div class="tickets-section">
+            <h2>Менің билеттерім</h2>
+            <div class="tickets-grid" id="ticketsGrid">
+                <!-- Билеттер осында көрсетіледі -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для полного билета -->
+    <div id="ticketModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="ticket-full" id="ticketFullContent">
+                <!-- Полный билет будет загружен сюда -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <a href="index.html" class="logo">
+                    <span>Great</span> Cinema
+                </a>
+                <p>Қазақстанның ең жақсы кинотеатр желісі. Сізге ең соңғы фильмдер мен ең жақсы тамашалау тәжірибесін ұсынамыз.</p>
+                <div class="social-links">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Байланыс ақпараты</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>Нұр-Сұлтан, Кабанбай батыр көш., 21</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-telephone"></i>
+                        <span>+7 (7172) 123-456</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-envelope"></i>
+                        <span>info@greatcinema.kz</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Жылдам сілтемелер</h3>
+                <a href="index.html">Басты бет</a>
+                <a href="about.html">Біз туралы</a>
+                <a href="profile.html">Менің профилім</a>
+                <a href="#">Көмек орталығы</a>
+                <a href="#">Жиі қойылатын сұрақтар</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Great Cinema. Барлық құқықтар қорғалған.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+    <script src="navigation.js"></script>
+    <script>
+        // Проверка авторизации
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (!currentUser) {
+            alert('Алдымен жүйеге кіруіңіз керек!');
+            window.location.href = 'auth.html';
+        }
+
+        // Загрузка данных пользователя
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+            loadUserTickets();
+        });
+
+        function loadUserProfile() {
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userEmail').textContent = currentUser.email;
+            
+            const regDate = new Date(currentUser.registrationDate);
+            document.getElementById('memberSince').textContent = 
+                `Тіркелген күні: ${regDate.toLocaleDateString('kk-KZ')}`;
+            
+            document.getElementById('ticketsCount').textContent = currentUser.tickets?.length || 0;
+        }
+
+        function loadUserTickets() {
+            const ticketsGrid = document.getElementById('ticketsGrid');
+            
+            if (!currentUser.tickets || currentUser.tickets.length === 0) {
+                ticketsGrid.innerHTML = `
+                    <div class="no-tickets">
+                        <i class="bi bi-ticket-perforated" style="font-size: 48px; margin-bottom: 20px;"></i>
+                        <h3>Әлі билеттер жоқ</h3>
+                        <p>Алғашқы билетіңізді сатып алыңыз!</p>
+                        <a href="index.html" style="color: #fd6565; text-decoration: none;">Фильмдерді көру</a>
+                    </div>
+                `;
+                return;
+            }
+
+            ticketsGrid.innerHTML = currentUser.tickets.map(ticket => `
+                <div class="ticket-card" onclick="showFullTicket(${ticket.id})">
+                    <div class="ticket-header">
+                        <div class="ticket-movie">${ticket.movie}</div>
+                        <div class="ticket-type">${ticket.type || '2D'}</div>
+                    </div>
+                    <div class="ticket-body">
+                        <div class="ticket-barcode-small">
+                            <svg id="barcode-small-${ticket.id}"></svg>
+                        </div>
+                        <div class="ticket-details">
+                            <div class="detail-row">
+                                <span>Кинотеатр:</span>
+                                <span>${ticket.cinema || 'Vegus Cinema'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Уақыты:</span>
+                                <span>${ticket.time || '19:00'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Күні:</span>
+                                <span>${ticket.date || '01.01.2024'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Орын:</span>
+                                <span>${ticket.seats || 'A1'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Бағасы:</span>
+                                <span style="color: #fd6565; font-weight: bold;">${ticket.price || '2000'} ₸</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Генерация маленьких штрих-кодов
+            currentUser.tickets.forEach(ticket => {
+                JsBarcode(`#barcode-small-${ticket.id}`, 
+                    `T-${ticket.id}`,
+                    {
+                        format: "CODE128",
+                        width: 1.5,
+                        height: 40,
+                        displayValue: false
+                    }
+                );
+            });
+        }
+
+        // Функции для модального окна
+        function showFullTicket(ticketId) {
+            const ticket = currentUser.tickets.find(t => t.id === ticketId);
+            if (!ticket) return;
+
+            const modalContent = document.getElementById('ticketFullContent');
+            modalContent.innerHTML = `
+                <div class="ticket-full-header">
+                    <h2>${ticket.movie}</h2>
+                    <div class="ticket-type">${ticket.type || '2D'}</div>
+                </div>
+                
+                <div class="ticket-full-barcode">
+                    <svg id="barcode-full-${ticket.id}"></svg>
+                </div>
+
+                <div class="transaction-id">
+                    Транзакция ID: ${ticket.transactionId || 'TRX-' + ticket.id}
+                </div>
+
+                <div class="ticket-full-details">
+                    <div class="ticket-full-row">
+                        <strong>Кинотеатр:</strong>
+                        <span>${ticket.cinema || 'Vegus Cinema'}</span>
+                    </div>
+                    <div class="ticket-full-row">
+                        <strong>Күні:</strong>
+                        <span>${ticket.date || '01.01.2024'}</span>
+                    </div>
+                    <div class="ticket-full-row">
+                        <strong>Уақыты:</strong>
+                        <span>${ticket.time || '19:00'}</span>
+                    </div>
+                    <div class="ticket-full-row">
+                        <strong>Орындар:</strong>
+                        <span>${ticket.seats || 'A1'}</span>
+                    </div>
+                    <div class="ticket-full-row">
+                        <strong>Тип:</strong>
+                        <span>${ticket.type || '2D'}</span>
+                    </div>
+                    <div class="ticket-full-row">
+                        <strong>Бағасы:</strong>
+                        <span style="color: #fd6565; font-weight: bold;">${ticket.price || '2000'} ₸</span>
+                    </div>
+                    <div class="ticket-full-row">
+                        <strong>Сатып алынған:</strong>
+                        <span>${new Date(ticket.purchaseDate).toLocaleDateString('kk-KZ')}</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #1f2025; border-radius: 8px; font-size: 12px; text-align: center;">
+                    <p><strong>СКАНЕРЛЕУ ҮШІН</strong></p>
+                    <p>Билетті тексеру үшін штрих-кодты сканерлеңіз</p>
+                </div>
+            `;
+
+            // Генерация полного штрих-кода с оптимизацией под ширину
+            JsBarcode(`#barcode-full-${ticket.id}`, 
+                `TICKET-${ticket.id}-${ticket.movie}-${ticket.seats}-${ticket.transactionId}`,
+                {
+                    format: "CODE128",
+                    width: 1.8,
+                    height: 100,
+                    displayValue: true,
+                    text: `TICKET-${ticket.id}`,
+                    fontOptions: "bold",
+                    margin: 10
+                }
+            );
+
+            document.getElementById('ticketModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('ticketModal').style.display = 'none';
+        }
+
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('ticketModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

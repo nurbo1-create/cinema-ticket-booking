@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="modern-style.css">
+    <title>Төлем - Great Cinema</title>
+    <style>
+        .payment-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .payment-form {
+            background: #2e3037;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .order-summary {
+            background: #2e3037;
+            padding: 30px;
+            border-radius: 15px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .section-title {
+            color: #fd6565;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 2px solid #fd6565;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: #1f2025;
+            color: white;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #fd6565;
+            outline: none;
+        }
+
+        .card-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            background: #1f2025;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: #fd6565;
+        }
+
+        .payment-method.active {
+            border-color: #fd6565;
+            background: rgba(253, 101, 101, 0.1);
+        }
+
+        .payment-method i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .pay-btn {
+            width: 100%;
+            padding: 15px;
+            background: #fd6565;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .pay-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .pay-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #fd6565;
+        }
+
+        .total-amount {
+            color: #fd6565;
+            font-size: 24px;
+        }
+
+        .movie-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #1f2025;
+            border-radius: 10px;
+        }
+
+        .movie-poster {
+            width: 80px;
+            height: 100px;
+            border-radius: 8px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .movie-details h3 {
+            margin-bottom: 5px;
+            color: #fd6565;
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        .security-badge {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .security-badge i {
+            color: #4CAF50;
+            font-size: 20px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading-spinner {
+            border: 4px solid #444;
+            border-top: 4px solid #fd6565;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .success-message i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация будет добавлена автоматически через navigation.js -->
+    <script src="navigation.js"></script>
+
+    <div class="payment-container">
+        <div class="payment-form">
+            <h2 class="section-title">Төлем әдісі</h2>
+            
+            <div class="payment-methods">
+                <div class="payment-method active" onclick="selectPaymentMethod('card')">
+                    <i class="bi bi-credit-card"></i>
+                    <span>Банк картасы</span>
+                </div>
+                <div class="payment-method" onclick="selectPaymentMethod('kaspi')">
+                    <i class="bi bi-phone"></i>
+                    <span>Kaspi</span>
+                </div>
+                <div class="payment-method" onclick="selectPaymentMethod('wallet')">
+                    <i class="bi bi-wallet2"></i>
+                    <span>Электрондық әмиян</span>
+                </div>
+            </div>
+
+            <form id="paymentForm">
+                <div id="cardPayment">
+                    <div class="form-group">
+                        <label for="cardNumber">Карта нөмірі</label>
+                        <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                    </div>
+                    
+                    <div class="card-group">
+                        <div class="form-group">
+                            <label for="expiryDate">Мерзімі</label>
+                            <input type="text" id="expiryDate" placeholder="АА/ЖЖ" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="000" maxlength="3">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardHolder">Карта иесі</label>
+                        <input type="text" id="cardHolder" placeholder="АЯ">
+                    </div>
+                </div>
+
+                <div id="kaspiPayment" style="display: none;">
+                    <div class="form-group">
+                        <label for="phoneNumber">Телефон нөмірі</label>
+                        <input type="tel" id="phoneNumber" placeholder="+7 700 123 4567">
+                    </div>
+                    <div style="background: #1f2025; padding: 15px; border-radius: 8px; text-align: center;">
+                        <i class="bi bi-phone" style="font-size: 48px; color: #00a79d; margin-bottom: 10px;"></i>
+                        <p>Kaspi QR-коды арқылы төлеу</p>
+                    </div>
+                </div>
+
+                <div id="walletPayment" style="display: none;">
+                    <div class="form-group">
+                        <label for="walletType">Электрондық әмиян</label>
+                        <select id="walletType">
+                            <option value="">Таңдаңыз</option>
+                            <option value="paybox">Paybox</option>
+                            <option value="jusan">Jusan</option>
+                            <option value="one">One</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="walletPhone">Телефон нөмірі</label>
+                        <input type="tel" id="walletPhone" placeholder="+7 700 123 4567">
+                    </div>
+                </div>
+
+                <button type="submit" class="pay-btn" id="payButton">
+                    Төлем жасау - <span id="totalAmount">0 ₸</span>
+                </button>
+
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Төлем өңделуде...</p>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <i class="bi bi-check-circle"></i>
+                    <h3>Төлем сәтті аяқталды!</h3>
+                    <p>Билетіңіз профильде сақталды</p>
+                    <p>Транзакция нөмірі: <strong id="transactionId">TRX-001</strong></p>
+                </div>
+            </form>
+
+            <div class="security-badges">
+                <div class="security-badge">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Қауіпсіз</span>
+                </div>
+                <div class="security-badge">
+                    <i class="bi bi-lock"></i>
+                    <span>Шифрланған</span>
+                </div>
+                <div class="security-badge">
+                    <i class="bi bi-patch-check"></i>
+                    <span>Тексерілген</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h2 class="section-title">Тапсырыс</h2>
+            
+            <div class="movie-info">
+                <img src="" alt="" class="movie-poster" id="orderMoviePoster">
+                <div class="movie-details">
+                    <h3 id="orderMovieTitle">Фильм атауы</h3>
+                    <p id="orderMovieDetails">Тип • Орын саны • Күні</p>
+                </div>
+            </div>
+
+            <div class="order-items">
+                <div class="order-item">
+                    <span>Билет бағасы</span>
+                    <span id="ticketsPrice">0 ₸</span>
+                </div>
+                <div class="order-item">
+                    <span>Қызмет ақысы</span>
+                    <span>200 ₸</span>
+                </div>
+                <div class="order-item">
+                    <span>Жеңілдік</span>
+                    <span style="color: #4CAF50;">-0 ₸</span>
+                </div>
+            </div>
+
+            <div class="order-total">
+                <span>Барлығы:</span>
+                <span class="total-amount" id="orderTotal">0 ₸</span>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: #1f2025; border-radius: 8px;">
+                <h4 style="margin-bottom: 10px; color: #fd6565;">Тапсырыс мәліметтері</h4>
+                <p style="font-size: 12px; margin-bottom: 5px;">Фильм: <span id="summaryMovie">Фильм атауы</span></p>
+                <p style="font-size: 12px; margin-bottom: 5px;">Уақыт: <span id="summaryTime">00:00</span></p>
+                <p style="font-size: 12px; margin-bottom: 5px;">Орындар: <span id="summarySeats">Орындар</span></p>
+                <p style="font-size: 12px;">Кинотеатр: <span id="summaryCinema">Great Cinema</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // База данных постеров фильмов
+        const moviePosters = {
+            "Ant man": "img/ant man.jpg",
+            "Avengers": "img/avengers.jpg",
+            "Dexter Resurrection": "img/dexter.jpg",
+            "Jhon Wick": "img/Jhon Wick.jpg",
+            "Spiderman": "img/spiderman.jpg",
+            "Topgun": "img/topgun.jpg"
+        };
+
+        // Текущий метод оплаты
+        let currentPaymentMethod = 'card';
+        let orderData = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, есть ли данные заказа
+            const savedOrder = localStorage.getItem('currentOrder');
+            if (savedOrder) {
+                orderData = JSON.parse(savedOrder);
+                updateOrderSummary();
+            } else {
+                // Если данных нет, показываем сообщение
+                alert('Тапсырыс мәліметтері табылмады! Броньдау бетіне қайтыңыз.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Проверка авторизации
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Төлем жасау үшін жүйеге кіруіңіз керек!');
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Форма оплаты
+            document.getElementById('paymentForm').addEventListener('submit', processPayment);
+            
+            // Форматирование номера карты
+            document.getElementById('cardNumber').addEventListener('input', formatCardNumber);
+            document.getElementById('expiryDate').addEventListener('input', formatExpiryDate);
+        }
+
+        function selectPaymentMethod(method) {
+            currentPaymentMethod = method;
+            
+            // Обновляем активную кнопку
+            document.querySelectorAll('.payment-method').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.payment-method').classList.add('active');
+            
+            // Показываем соответствующую форму
+            document.getElementById('cardPayment').style.display = method === 'card' ? 'block' : 'none';
+            document.getElementById('kaspiPayment').style.display = method === 'kaspi' ? 'block' : 'none';
+            document.getElementById('walletPayment').style.display = method === 'wallet' ? 'block' : 'none';
+        }
+
+        function formatCardNumber() {
+            let input = document.getElementById('cardNumber');
+            let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = '';
+            
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            input.value = formattedValue;
+        }
+
+        function formatExpiryDate() {
+            let input = document.getElementById('expiryDate');
+            let value = input.value.replace(/\D/g, '');
+            
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            
+            input.value = value;
+        }
+
+        function updateOrderSummary() {
+            if (orderData.movie) {
+                // Обновляем постер фильма
+                const posterSrc = moviePosters[orderData.movie] || "img/ant man.jpg";
+                document.getElementById('orderMoviePoster').src = posterSrc;
+                document.getElementById('orderMoviePoster').alt = orderData.movie;
+                
+                // Обновляем основную информацию
+                document.getElementById('orderMovieTitle').textContent = orderData.movie;
+                document.getElementById('summaryMovie').textContent = orderData.movie;
+                document.getElementById('summaryTime').textContent = orderData.time || '19:00';
+                document.getElementById('summarySeats').textContent = orderData.seats || 'Орындар таңдалмаған';
+                document.getElementById('summaryCinema').textContent = orderData.cinema || 'Great Cinema';
+                
+                // Обновляем детали заказа
+                const seatsCount = orderData.seats ? orderData.seats.split(',').length : 1;
+                const ticketPrice = orderData.total / seatsCount;
+                
+                document.getElementById('orderMovieDetails').textContent = 
+                    `${orderData.type || '2D'} • ${seatsCount} орын • ${new Date().toLocaleDateString('kk-KZ')}`;
+                
+                document.getElementById('ticketsPrice').textContent = 
+                    `${orderData.total} ₸`;
+                
+                // Рассчитываем скидку (10% от суммы)
+                const discount = Math.floor(orderData.total * 0.1);
+                const finalTotal = orderData.total - discount;
+                
+                document.querySelector('.order-item:nth-child(3) span:last-child').textContent = `-${discount} ₸`;
+                document.getElementById('orderTotal').textContent = `${finalTotal} ₸`;
+                document.getElementById('totalAmount').textContent = `${finalTotal} ₸`;
+            }
+        }
+
+        function processPayment(event) {
+            event.preventDefault();
+            
+            const payButton = document.getElementById('payButton');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Показываем загрузку
+            payButton.disabled = true;
+            loading.style.display = 'block';
+            
+            // Имитация процесса оплаты
+            setTimeout(() => {
+                loading.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Генерируем случайный ID транзакции
+                const transactionId = 'TRX-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                document.getElementById('transactionId').textContent = transactionId;
+                
+                // Сохраняем билет в профиль пользователя
+                saveTicketToProfile(transactionId);
+                
+            }, 3000);
+        }
+
+        function saveTicketToProfile(transactionId) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const users = JSON.parse(localStorage.getItem('cinemaUsers')) || [];
+            
+            if (currentUser && orderData) {
+                const seatsCount = orderData.seats ? orderData.seats.split(',').length : 1;
+                const discount = Math.floor(orderData.total * 0.1);
+                const finalTotal = orderData.total - discount;
+                
+                const ticket = {
+                    id: Date.now(),
+                    movie: orderData.movie,
+                    date: orderData.date || new Date().toISOString().split('T')[0],
+                    seats: orderData.seats,
+                    price: finalTotal,
+                    type: orderData.type || '2D',
+                    cinema: orderData.cinema || 'Great Cinema',
+                    time: orderData.time || '19:00',
+                    transactionId: transactionId,
+                    purchaseDate: new Date().toISOString()
+                };
+                
+                // Обновляем данные пользователя
+                const userIndex = users.findIndex(u => u.email === currentUser.email);
+                if (userIndex !== -1) {
+                    users[userIndex].tickets = users[userIndex].tickets || [];
+                    users[userIndex].tickets.push(ticket);
+                    
+                    localStorage.setItem('cinemaUsers', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify(users[userIndex]));
+                }
+                
+                // Очищаем текущий заказ
+                localStorage.removeItem('currentOrder');
+                
+                // Перенаправляем в профиль через 3 секунды
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

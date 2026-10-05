@@ -1,0 +1,683 @@
+/* modern-style.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --primary: #fd6565;
+    --primary-dark: #ff5252;
+    --secondary: #6366f1;
+    --dark: #0f0f23;
+    --dark-light: #1a1a2e;
+    --darker: #0a0a1a;
+    --text: #ffffff;
+    --text-secondary: #b0b0b0;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --card-bg: rgba(30, 30, 46, 0.8);
+    --glass: rgba(255, 255, 255, 0.1);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, var(--dark-light) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Навигация */
+.navbar {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--primary);
+    text-shadow: 0 0 20px var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+    background: var(--glass);
+    transform: translateY(-2px);
+}
+
+.user-welcome {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.btn-logout {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-logout:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(253, 101, 101, 0.4);
+}
+
+/* Главная страница - сетка фильмов */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(253, 101, 101, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.movie-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid var(--glass);
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.movie-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow), 0 0 30px rgba(253, 101, 101, 0.2);
+    border-color: var(--primary);
+}
+
+.movie-poster {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover .movie-poster {
+    transform: scale(1.1);
+}
+
+.movie-info {
+    padding: 1.5rem;
+    position: relative;
+}
+
+.movie-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.movie-genre {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.movie-duration {
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(15,15,35,0.9) 0%, transparent 50%);
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .movie-overlay {
+    opacity: 1;
+}
+
+.btn-book {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-book:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(253, 101, 101, 0.4);
+}
+
+/* Футер */
+.footer {
+    background: var(--dark-light);
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
+    border-top: 1px solid var(--glass);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--glass);
+    color: var(--text-secondary);
+}
+
+.admin-access {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border-left: 4px solid var(--primary);
+}
+
+.admin-access a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.movie-card {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+.movie-card:nth-child(2) { animation-delay: 0.1s; }
+.movie-card:nth-child(3) { animation-delay: 0.2s; }
+.movie-card:nth-child(4) { animation-delay: 0.3s; }
+.movie-card:nth-child(5) { animation-delay: 0.4s; }
+.movie-card:nth-child(6) { animation-delay: 0.5s; }
+
+/* Скроллбар */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* Добавить в modern-style.css (или обновленный style.css) */
+
+/* Стили для страницы бронирования */
+.booking-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+}
+
+/* Левая панель с информацией о фильме */
+.movie-sidebar {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--glass);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.movie-poster-large {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.movie-details h1 {
+    color: var(--text);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.movie-meta {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* Правая панель с выбором мест */
+.booking-main {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--glass);
+}
+
+/* Календарь и время */
+.date-selection, .time-selection {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.dates-grid, .times-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.date-btn, .time-btn {
+    background: var(--dark-light);
+    border: 2px solid transparent;
+    color: var(--text);
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.date-btn:hover, .time-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.date-btn.active, .time-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Экран */
+.screen {
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    height: 4px;
+    margin: 3rem 0 2rem;
+    position: relative;
+    border-radius: 2px;
+}
+
+.screen::before {
+    content: 'ЭКРАН';
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Схема мест */
+.seats-container {
+    margin-bottom: 2rem;
+}
+
+.seats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.seat-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.row-label {
+    color: var(--text-secondary);
+    font-weight: 600;
+    width: 30px;
+    text-align: center;
+}
+
+.seat {
+    width: 35px;
+    height: 35px;
+    background: var(--dark-light);
+    border: 2px solid transparent;
+    border-radius: 8px 8px 4px 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: transparent;
+    position: relative;
+}
+
+.seat:hover {
+    border-color: var(--primary);
+    transform: scale(1.1);
+}
+
+.seat.available {
+    background: var(--dark-light);
+    border-color: #444;
+}
+
+.seat.available:hover {
+    background: #2a2a3a;
+}
+
+.seat.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.seat.occupied {
+    background: #444;
+    border-color: #666;
+    cursor: not-allowed;
+}
+
+.seat.occupied:hover {
+    transform: none;
+}
+
+/* Легенда мест */
+.seats-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.legend-available { background: var(--dark-light); border: 2px solid #444; }
+.legend-selected { background: var(--primary); }
+.legend-occupied { background: #444; }
+
+/* Кнопка бронирования */
+.booking-actions {
+    text-align: center;
+}
+
+.btn-booking {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-booking:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(253, 101, 101, 0.4);
+}
+
+.btn-booking:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .booking-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .movie-sidebar {
+        position: static;
+    }
+    
+    .dates-grid, .times-grid {
+        justify-content: center;
+    }
+    
+    .seat {
+        width: 30px;
+        height: 30px;
+    }
+}
+/* Стили для футера */
+.footer {
+    background: #1f2025;
+    color: white;
+    padding: 40px 0 20px;
+    margin-top: 50px;
+}
+
+.footer-content {
+    width: 90%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.footer-section h3 {
+    color: #fd6565;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.footer-section p, .footer-section a {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    color: #fd6565;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    background: #2e3037;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.social-links a:hover {
+    background: #fd6565;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    margin-top: 30px;
+    border-top: 1px solid #2e3037;
+    color: #888;
+    font-size: 14px;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

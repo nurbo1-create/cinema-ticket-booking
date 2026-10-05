@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="modern-style.css">
+    <title>Біз туралы - Great Cinema</title>
+    <style>
+        .about-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            color: white;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-header h1 {
+            color: var(--primary);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .about-content {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass);
+        }
+
+        .info-section {
+            margin-bottom: 3rem;
+        }
+
+        .info-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-section p {
+            line-height: 1.8;
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--dark-light);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--glass);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(253, 101, 101, 0.2);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: var(--dark-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--glass);
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .contact-item h4 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .about-header h1 {
+                font-size: 2rem;
+            }
+            
+            .about-content {
+                padding: 1.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация и футер добавятся автоматически -->
+    
+    <div class="container">
+        <!-- Уникальный контент страницы -->
+    </div>
+
+    <!-- Подключаем общие компоненты -->
+<!-- УДАЛИТЬ статический футер -->
+
+<!-- ОСТАВИТЬ только эти скрипты -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+<script src="navigation.js"></script>
+<script src="footer.js"></script>
+
+    
+    <div class="about-container">
+        <div class="about-header">
+            <h1>Great Cinema туралы</h1>
+            <p>Қазақстанның жетекші онлайн-билет жүйесі</p>
+        </div>
+
+        <div class="about-content">
+            <div class="info-section">
+                <h2>Біз жайлы</h2>
+                <p>Great Cinema - бұл заманауи технологиялар мен үздік қызметті біріктіретін онлайн-билет жүйесі. Біз 2020 жылдан бастап қызмет көрсетіп келеміз және бүгінде қазақстандықтардың сүйікті кино платформасына айналдық.</p>
+                
+                <p>Біздің мақсатымыз - пайдаланушыларға ең ыңғайлы және жылдам тәжірибе бере отырып, кинотеатрға баруды жеңілдету.</p>
+            </div>
+
+            <div class="info-section">
+                <h2>Біздің артықшылықтарымыз</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="bi bi-lightning-charge"></i>
+                        <h3>Жылдам</h3>
+                        <p>Билеттерді бірнеше секунд ішінде сатып алыңыз. Қарапайым интерфейс пен тез броньдау.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="bi bi-shield-check"></i>
+                        <h3>Қауіпсіз</h3>
+                        <p>Жоғары деңгейдегі қауіпсіздік және шифрлау. Сіздің деректеріңіз сенімді қорғалған.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="bi bi-phone"></i>
+                        <h3>Ыңғайлы</h3>
+                        <p>Кез келген құрылғыдан қол жетімді интерфейс. Телефон, планшет немесе компьютер.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="bi bi-qr-code"></i>
+                        <h3>Заманауи</h3>
+                        <p>QR-кодтар және электронды билеттер. Қағаздық билеттерді ұмытыңыз!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>Байланыс ақпараты</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <h4>Мекен-жайы</h4>
+                        <p>Астана, Достык көш., 12</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-telephone"></i>
+                        <h4>Телефон</h4>
+                        <p>+7 777 123 4567</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-envelope"></i>
+                        <h4>Email</h4>
+                        <p>info@greatcinema.kz</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-clock"></i>
+                        <h4>Жұмыс уақыты</h4>
+                        <p>09:00 - 23:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

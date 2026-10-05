@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1f2025;
+     font-family: 'Poppins', sans-serif;
+}
+.book {
+    width: 92%;
+    height: 90%;
+    /*
+    border: 1px solid;
+    */
+    display: flex;  
+    
+
+}
+
+.book .left , .right {
+    width: 80%;
+    position: relative;
+    height: 100%;
+/*     border: 1px solid #fff; */
+}
+
+.book .left {
+    width: 20%;
+}
+.book .left img {
+    width: 100%;
+}
+
+.book .left .play {
+    position: relative;
+}
+
+.book .left .play {
+    position: relative;
+    left: 44%;
+    top: -25px;
+    background: #fd6565;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    box-shadow: 0px 0px 20px #fd6565;
+    transition: .3s linear;
+    cursor: pointer;
+}
+.book .left .play:hover {
+    transform: rotate(360deg);
+}
+
+.book .left .cont {
+    color: #fff;
+    padding: 0 20px;
+}
+
+.book .left .cont h6 {
+    font-size: 13px;
+}
+
+.book .left .cont p {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.book .right {
+    padding: 10px 40px;
+    background: unset;
+}
+
+.book .right::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 200px;
+/*     border: 1px solid #fff; */
+    background: url(img/bg.jpg)no-repeat center -250px/cover;
+    z-index: -10;
+    border-radius: 20px;
+} 
+
+.book .right::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 200px;
+    /*border: 1px solid #fff; */
+    top: 0;
+    background: linear-gradient(0deg , transparent, #1f2025);
+    z-index: -10;
+    border-radius: 20px;
+} 
+
+.book .right .head_time {
+    position: relative;
+    width: 175%;
+    display: flex;
+    align-items: self-start;
+    justify-content: space-between;
+
+}
+.book .right .head_time::before {
+    content: '';
+    position: absolute;
+    width: 175px;
+    height: 250px;
+    top: 0;
+    right: -25px; 
+    background: linear-gradient(90deg, transparent, #1f2025);
+    z-index: -9;
+
+} 
+
+.book .right .head_time::after {
+    content: '';    
+    width: 175px;
+    height: 250px;
+    top: 0;
+    left: -25px;
+    background: linear-gradient(270deg, transparent, #1f2025);
+    z-index: -9;
+}   
+
+.book .right .head_time h1 {
+    color: #fff;
+    margin-left: 10px;
+    font-weight: 600;
+
+}
+.book .right .head_time .time {
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.book .right .head_time .time h6 {
+    font-size: 13px;
+    margin-right: 5px;
+
+}
+.book .right .head_time .time h6 i {
+    margin-right: 5px;
+}
+
+.book .right .head_time .time button {
+    margin: 8px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    border: 2px solid #fd6565;
+    color: #fff;
+    background: none;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .3s linear;
+}
+
+.book .right .head_time .time button:hover {
+    background: #fd6565;
+}
+
+.book .right .data_type {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.book .right .data_type .left_card , .right_card {
+    width: 45%;
+    border: 1px solid #fff;
+}
+
